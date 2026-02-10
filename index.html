@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Surprise 🎁</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .buttons {
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 14px 32px;
+      font-size: 18px;
+      margin: 10px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 10px 20px rgba(255,77,109,0.4);
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.08);
+    }
+
+    #noBtn {
+      background: #f1f1f1;
+      color: #555;
+      position: absolute;
+    }
+
+    #loader {
+      display: none;
+      font-size: 20px;
+      margin-top: 30px;
+      color: #ff4d6d;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1 id="question1">Will you be my Valentine? 🌹</h1>
+    <h1 id="question2">An open challenge 😈 Just dare to click No!</h1>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes 💖🎁</button>
+      <button id="noBtn">No 😏💔</button>
+    </div>
+
+    <div id="loader">
+      Loading your surprise...
+      <h1>🎉🎉🎉🎉🎉🎉🎉🎉🎉</h1>
+    </div>
+  </div>
+
+  <!-- Sound -->
+  <audio id="soundEffect" preload="auto" playsinline>
+    <source src="fabienroch-we-wish-you-a-sweet-christmas-173879.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const sound = document.getElementById("soundEffect");
+    const yesBtn = document.getElementById("yesBtn");
+
+    // Move No button
+    function moveNoButton() {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("mouseover", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
+    // Yes click
+    yesBtn.addEventListener("click", () => {
+      sound.volume = 0.6;
+      sound.play().catch(() => {});
+
+      document.getElementById("question1").style.display = "none";
+      document.getElementById("question2").style.display = "none";
+      yesBtn.style.display = "none";
+      noBtn.style.display = "none";
+      document.getElementById("loader").style.display = "block";
+
+      setTimeout(() => {
+        window.location.href = "page2.html";
+      }, 2500);
+    });
+
+    // Floating hearts generator
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "🌹";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 6000);
+    }, 600);
+  </script>
+
+</body>
+</html>
