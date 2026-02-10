@@ -3,7 +3,6 @@
 <head>
   <title>Surprise2 🎉</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -15,9 +14,29 @@
       align-items: center;
       overflow: hidden;
       color: white;
+      flex-direction: column;
     }
 
+    /* Play button */
+    #playButton {
+      font-size: 24px;
+      padding: 20px 40px;
+      border: none;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    #playButton:hover {
+      transform: scale(1.05);
+    }
+
+    /* Card / slideshow */
     .card {
+      display: none; /* hidden initially */
       background: rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(10px);
       border-radius: 25px;
@@ -90,10 +109,14 @@
 </head>
 
 <body>
+  <!-- Play button -->
+  <button id="playButton">Tap to Play Surprise ❤️🎵🌹✨</button>
 
+  <!-- Card / slideshow -->
   <div class="card">
-    <h1>❤️❤️❤️ Happy Valentine's Day My Husband ❤️❤️❤️</h1>
-    <h2>Life with you has been so full of love and warmth ✨</h2>
+    <h1>🎀 Happy Valentine's Day 🎀</h1>
+    <h1>❤️❤️❤️ My Husband ❤️❤️❤️</h1>
+    <h2>✨Life with you has been so full of love and warmth ✨</h2>
 
     <div class="slideshow">
       <img src="img1.jpeg" class="slide active">
@@ -116,35 +139,39 @@
   </audio>
 
   <script>
-    // Music autoplay
-    window.addEventListener("load", () => {
-      const music = document.getElementById("bgMusic");
+    const playButton = document.getElementById("playButton");
+    const card = document.querySelector(".card");
+    const music = document.getElementById("bgMusic");
+
+    playButton.addEventListener("click", () => {
+      // Hide button, show card
+      playButton.style.display = "none";
+      card.style.display = "block";
+
+      // Play music
       music.volume = 0.6;
       music.play().catch(() => {});
+
+      // Start slideshow
+      const slides = document.querySelectorAll(".slide");
+      let currentIndex = 0;
+      setInterval(() => {
+        slides[currentIndex].classList.remove("active");
+        currentIndex = (currentIndex + 1) % slides.length;
+        slides[currentIndex].classList.add("active");
+      }, 4000);
+
+      // Floating hearts
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+      }, 700);
     });
-
-    // Slideshow
-    const slides = document.querySelectorAll(".slide");
-    let currentIndex = 0;
-
-    setInterval(() => {
-      slides[currentIndex].classList.remove("active");
-      currentIndex = (currentIndex + 1) % slides.length;
-      slides[currentIndex].classList.add("active");
-    }, 4000);
-
-    // Floating hearts
-    setInterval(() => {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerHTML = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-      document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 6000);
-    }, 700);
   </script>
-
 </body>
 </html>
