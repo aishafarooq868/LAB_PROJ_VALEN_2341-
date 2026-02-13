@@ -100,6 +100,7 @@
     </div>
 
     <div id="loader">
+      <h1>knew you would say yes 💃💃</h1>
       Loading your surprise...
       <h1>🎉🎉🎉🎉🎉🎉🎉🎉🎉</h1>
     </div>
@@ -118,7 +119,7 @@
     let noClickCount = 0;
 
     const noTexts = [
-      "Don't do it 😬",
+      "Are you sure? 😏",
       "Please pookie.. 🥺",
       "It'll make me sad 😢"
     ];
@@ -126,7 +127,7 @@
     noBtn.addEventListener("click", () => {
       noClickCount++;
 
-      // Grow YES button without overlap
+      // Grow YES button
       yesBtn.style.padding = `${14 + noClickCount * 6}px ${32 + noClickCount * 12}px`;
       yesBtn.style.fontSize = `${18 + noClickCount * 2}px`;
 
@@ -135,8 +136,8 @@
         noBtn.textContent = noTexts[noClickCount - 1];
       }
 
-      // LAST CLICK → NO RUNS AWAY
-      if (noClickCount >= 3) {
+      // 🚀 ONLY AFTER ALL TEXTS → NO RUNS AWAY
+      if (noClickCount >= noTexts.length) {
         noBtn.style.position = "absolute";
         moveNoButton();
 
@@ -174,4 +175,3 @@
 </body>
 
 </html>
-
