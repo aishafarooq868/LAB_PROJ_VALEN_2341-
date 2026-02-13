@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Surprise 🎁</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +24,7 @@
       width: 90%;
       max-width: 400px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
       position: relative;
     }
 
@@ -35,33 +36,31 @@
 
     .buttons {
       margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      /* 🔑 important */
     }
 
-    button {
-      padding: 14px 32px;
-      font-size: 18px;
-      margin: 10px;
-      border-radius: 30px;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
 
     #yesBtn {
       background: #ff4d6d;
       color: white;
-      box-shadow: 0 10px 20px rgba(255,77,109,0.4);
+      border-radius: 30px;
+      box-shadow: 0 10px 20px rgba(255, 77, 109, 0.4);
+      padding: 14px 32px;
     }
 
-    #yesBtn:hover {
-      transform: scale(1.08);
-    }
 
     #noBtn {
       background: #f1f1f1;
+      border-radius: 30px;
       color: #555;
-      position: absolute;
     }
+
 
     #loader {
       display: none;
@@ -70,23 +69,16 @@
       color: #ff4d6d;
     }
 
-    /* Floating hearts */
-    .heart {
-      position: fixed;
-      bottom: -20px;
-      font-size: 20px;
-      animation: floatUp 6s linear infinite;
-      opacity: 0.7;
-    }
-
     @keyframes floatUp {
       0% {
         transform: translateY(0);
         opacity: 0;
       }
+
       20% {
         opacity: 1;
       }
+
       100% {
         transform: translateY(-110vh);
         opacity: 0;
@@ -122,7 +114,37 @@
     const sound = document.getElementById("soundEffect");
     const yesBtn = document.getElementById("yesBtn");
 
-    // Move No button
+    let noClickCount = 0;
+
+    const noTexts = [
+      "Don't do it 😬",
+      "Please pookie.. 🥺",
+      "It'll make me sad 😢"
+    ];
+
+    noBtn.addEventListener("click", () => {
+      noClickCount++;
+
+      // Grow YES button without overlap
+      yesBtn.style.padding = `${14 + noClickCount * 6}px ${32 + noClickCount * 12}px`;
+      yesBtn.style.fontSize = `${18 + noClickCount * 2}px`;
+
+      // Change NO text
+      if (noClickCount <= noTexts.length) {
+        noBtn.textContent = noTexts[noClickCount - 1];
+      }
+
+      // LAST CLICK → NO RUNS AWAY
+      if (noClickCount >= 3) {
+        noBtn.style.position = "absolute";
+        moveNoButton();
+
+        noBtn.addEventListener("mouseover", moveNoButton);
+        noBtn.addEventListener("touchstart", moveNoButton);
+      }
+    });
+
+    // Run-away function
     function moveNoButton() {
       const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
       const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -130,13 +152,11 @@
       noBtn.style.top = y + "px";
     }
 
-    noBtn.addEventListener("mouseover", moveNoButton);
-    noBtn.addEventListener("touchstart", moveNoButton);
 
     // Yes click
     yesBtn.addEventListener("click", () => {
       sound.volume = 0.6;
-      sound.play().catch(() => {});
+      sound.play().catch(() => { });
 
       document.getElementById("question1").style.display = "none";
       document.getElementById("question2").style.display = "none";
@@ -148,19 +168,8 @@
         window.location.href = "page2.html";
       }, 2500);
     });
-
-    // Floating hearts generator
-    setInterval(() => {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerHTML = "🌹";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-      document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 6000);
-    }, 600);
   </script>
 
 </body>
+
 </html>
